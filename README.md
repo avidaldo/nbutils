@@ -36,5 +36,11 @@ nbu convert input.md output.py
 # Create a directory with all notebooks in the current directory as markdown files
 nbu batch-md
 
+# Increase all headings in a markdown file
+nbu increase-headings +
+
+# Decrease all headings in a markdown file
+nbu increase-headings -
+
 ```
 
