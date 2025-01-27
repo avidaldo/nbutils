@@ -18,6 +18,8 @@ A command-line utility for managing and converting Jupyter notebooks.
 ## Installation
 
 ```bash
+git clone https://github.com/avidaldo/nbutils
+cd nbutils
 pip install nbutils
 ```
 
