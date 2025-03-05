@@ -10,6 +10,10 @@ def find_notebooks(path: str = '.') -> List[str]:
     """Find all Jupyter notebooks in the given path"""
     return glob.glob(os.path.join(path, '**/*.ipynb'), recursive=True)
 
+def find_python_files(path: str = '.') -> List[str]:
+    """Find all Python files in the given path"""
+    return glob.glob(os.path.join(path, '**/*.py'), recursive=True)
+
 def get_output_path(input_path: str, output_dir: str, extension: str) -> str:
     """
     Convert input path to output path in the specified output directory.
@@ -56,8 +60,16 @@ def convert(input_path: str, output_path: str):
                 click.echo("✗ Markdown to python conversion not implemented.")
             else:
                 click.echo("✗ Unsupported output format. Use .ipynb or .py.")
+        elif input_path.endswith('.py'):
+            # Convert Python to notebook
+            if output_path.endswith('.ipynb'):
+                nb = NBUtils(input_path)
+                nb.convert_from_py(output_path)
+                click.echo(f"✓ Converted {input_path} -> {output_path}")
+            else:
+                click.echo("✗ Unsupported output format for Python input. Use .ipynb.")
         else:
-            click.echo("✗ Unsupported input format. Use .ipynb or .md.")
+            click.echo("✗ Unsupported input format. Use .ipynb, .md, or .py.")
     except Exception as e:
         click.echo(f"✗ Failed to convert {input_path} to {output_path}: {str(e)}")
 
@@ -102,6 +114,26 @@ def batch_to_python(path: str, output_dir: str):
             click.echo(f"✓ Converted {nb_path} -> {py_path}")
         except Exception as e:
             click.echo(f"✗ Failed to convert {nb_path}: {str(e)}")
+
+@cli.command('batch-ipynb')
+@click.argument('path', default='.')
+@click.option('-o', '--output-dir', default='notebooks', help='Output directory for Jupyter notebooks')
+def batch_to_notebook(path: str, output_dir: str):
+    """Convert all Python files in path to Jupyter notebooks"""
+    py_files = find_python_files(path)
+    click.echo(f"Found {len(py_files)} Python file(s). Converting to Jupyter notebooks...")
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    for py_path in py_files:
+        try:
+            ipynb_path = get_output_path(py_path, output_dir, '.ipynb')
+            nb = NBUtils(py_path)
+            nb.convert_from_py(ipynb_path)
+            click.echo(f"✓ Converted {py_path} -> {ipynb_path}")
+        except Exception as e:
+            click.echo(f"✗ Failed to convert {py_path}: {str(e)}")
 
 @cli.command('adjust-headings')
 @click.argument('path')

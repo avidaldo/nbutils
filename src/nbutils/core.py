@@ -2,7 +2,7 @@ import json
 import os
 from typing import Optional
 
-from .operations.convert import notebook_to_markdown, notebook_to_py
+from .operations.convert import notebook_to_markdown, notebook_to_py, py_to_notebook
 from .operations.headings import adjust_headings
 
 class NBUtils:
@@ -36,3 +36,15 @@ class NBUtils:
     def adjust_headings(self, adjustment: str) -> None:
         """Adjust heading levels in the notebook"""
         adjust_headings(self.input_path, adjustment)
+        
+    def convert_from_py(self, output_path: Optional[str] = None) -> None:
+        """Convert Python file to Jupyter notebook"""
+        with open(self.input_path, 'r', encoding='utf-8') as f:
+            py_content = f.read()
+            
+        notebook_content = py_to_notebook(py_content)
+        
+        if output_path:
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(notebook_content, f, indent=2)
+        return notebook_content
