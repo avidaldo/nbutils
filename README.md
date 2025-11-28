@@ -17,14 +17,16 @@ A command-line utility for managing and converting Jupyter notebooks.
 - Batch convert all Python files in a directory to Jupyter notebooks
 (converts comments to markdown cells and code to code cells)
 
-- Increase or decrease all titles in a markdown file (or notebook)
+- Increase or decrease all headings in markdown files or notebooks
+  - Supports multiple files at once
+  - Interactive warnings when decreasing first-level headings
 
 ## Installation
 
 ```bash
 git clone https://github.com/avidaldo/nbutils
 cd nbutils
-pip install .
+pipx install .
 ```
 
 ## Usage
@@ -48,11 +50,21 @@ nbu batch-md
 # Create a directory with all Python files in the current directory as Jupyter notebooks
 nbu batch-ipynb
 
-# Increase all headings in a markdown file
-nbu increase-headings +
+# Increase all headings in a file (notebook or markdown)
+nbu inc-heads file.ipynb
 
-# Decrease all headings in a markdown file
-nbu increase-headings -
+# Increase headings in multiple files
+nbu inc-heads file1.ipynb file2.md file3.ipynb
+
+# Decrease all headings in a file (notebook or markdown)
+nbu dec-heads file.md
+
+# Decrease headings in multiple files
+nbu dec-heads file1.ipynb file2.md
+
+# Force decrease even with first-level headings (skip confirmation)
+nbu dec-heads -f file.ipynb
+ 
 
 ```
 

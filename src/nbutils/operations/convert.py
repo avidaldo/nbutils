@@ -1,7 +1,7 @@
-from typing import Dict, Any
-import re
+"""Operations for converting between Jupyter notebooks, Python files, and markdown."""
 
-def notebook_to_markdown(notebook_content: Dict[str, Any]) -> str:
+
+def notebook_to_markdown(notebook_content: dict[str, any]) -> str:
     """Convert Jupyter notebook to markdown format"""
     markdown_lines = []
     
@@ -21,7 +21,7 @@ def notebook_to_markdown(notebook_content: Dict[str, Any]) -> str:
             
     return '\n'.join(markdown_lines)
 
-def notebook_to_py(notebook_content: Dict[str, Any]) -> str:
+def notebook_to_py(notebook_content: dict[str, any]) -> str:
     """Convert Jupyter notebook to Python file with markdown as comments"""
     py_lines = []
     
@@ -45,7 +45,7 @@ def notebook_to_py(notebook_content: Dict[str, Any]) -> str:
             
     return '\n'.join(py_lines)
 
-def py_to_notebook(py_content: str) -> Dict[str, Any]:
+def py_to_notebook(py_content: str) -> dict[str, any]:
     """Convert Python file to Jupyter notebook format
     
     Parses a Python file and converts it to a Jupyter notebook by:
